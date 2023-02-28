@@ -3,14 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Demo</title>
+    <script src="main.js"></script>
 </head>
 <body>
     <h1>Hello world from C02-23G</h1>
     <p id="myText">This tex from html</p>
-    <button onclick="change()">Click me!</button>
+    <button onclick="alert('Hello C0213G1')">Click me!</button>
+    <button onclick="greeting()">Click me!</button>
 
     <script>
         document.write("<br>This text from javascript");
+        document.write(5 + 5 + '5'); // 105
         function change() {
             document.getElementById("myText").innerHTML = "<h5>Text changed!!!</h5>"
         }

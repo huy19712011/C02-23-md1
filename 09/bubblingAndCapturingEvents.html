@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bubbling and Capturing</title>
+    <link rel="stylesheet" href="example.css">
+</head>
+<body>
+
+<!--
+<div onclick="alert('The handler!')">
+    <em>If you click on <code>EM</code>, the handler on <code>DIV</code> runs.</em>
+</div>
+-->
+
+<!--
+Bubbling
+-->
+
+<!--
+<style>
+    body * {
+        margin: 10px;
+        border: 1px solid red;
+    }
+</style>
+
+<form onclick="alert('form')">FORM
+    <div onclick="alert('div')">DIV
+        <p onclick="alert('p')">P</p>
+    </div>
+</form>
+-->
+
+<!--
+event.target
+event.currentTarget
+-->
+
+<!--
+A click shows both <code>event.target</code> and <code>this</code> to compare:
+
+<form id="form">FORM
+    <div>DIV
+        <p>P</p>
+    </div>
+</form>
+
+<script src="script.js"></script>
+-->
+
+<!--Stopping bubbling-->
+<!--
+<body onclick="alert(`the bubbling doesn't reach here`)">
+<button onclick="event.stopPropagation()">Click me</button>
+</body>
+-->
+
+<!--Capturing-->
+<!--
+elem.addEventListener(..., {capture: true})
+// or, just "true" is an alias to {capture: true}
+elem.addEventListener(..., true)
+-->
+
+<!--
+<style>
+    body * {
+        margin: 10px;
+        border: 1px solid blue;
+    }
+</style>
+
+<form>FORM
+    <div>DIV
+        <p>P</p>
+    </div>
+</form>
+
+<script>
+    for(let elem of document.querySelectorAll('*')) {
+        elem.addEventListener("click", e => alert(`Capturing: ${elem.tagName}`), true);
+        elem.addEventListener("click", e => alert(`Bubbling: ${elem.tagName}`));
+    }
+</script>
+-->
+
+
+<!--Delegation example: actions in markup-->
+<div id="menu">
+    <button data-action="save">Save</button>
+    <button data-action="load">Load</button>
+    <button data-action="search">Search</button>
+</div>
+
+<script>
+    class Menu {
+        constructor(elem) {
+            this._elem = elem;
+            elem.onclick = this.onClick.bind(this); // (*)
+        }
+
+        save() {
+            alert('saving');
+        }
+
+        load() {
+            alert('loading');
+        }
+
+        search() {
+            alert('searching');
+        }
+
+        onClick(event) {
+            let action = event.target.dataset.action;
+            if (action) {
+                this[action]();
+            }
+        };
+    }
+
+    new Menu(menu);
+</script>
+
+
+<!--Behavior: Counter -example -->
+<!--
+Counter: <input type="button" value="1" data-counter>
+One more counter: <input type="button" value="2" data-counter>
+
+<script>
+    document.addEventListener('click', function(event) {
+
+        if (event.target.dataset.counter != undefined) { // if the attribute exists...
+            event.target.value++;
+        }
+
+    });
+</script>
+-->
+
+<!--Behavior: Toggler - example-->
+<!--
+<button data-toggle-id="subscribe-mail">
+    Show the subscription form
+</button>
+
+<form id="subscribe-mail" hidden>
+    Your mail: <input type="email">
+</form>
+
+<script>
+    document.addEventListener('click', function(event) {
+        let id = event.target.dataset.toggleId;
+        if (!id) return;
+
+        let elem = document.getElementById(id);
+
+        elem.hidden = !elem.hidden;
+    });
+</script>
+-->
+
+</body>
+</html>
